@@ -12,7 +12,6 @@ import { HeaderComponent } from './layout/header/header.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'ecommerce';
-  private readonly productSvc = inject(ProductsService);
-  products = this.productSvc.products;
+  // private readonly productSvc = inject(ProductsService);
+  // products = this.productSvc.products;
 }

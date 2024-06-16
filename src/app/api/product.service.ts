@@ -3,7 +3,6 @@ import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
 
 import { environment } from '@envs/environment.development';
 import { Product } from '@shared/models/product.interface';
-import { log } from 'console';
 import { tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -16,13 +15,10 @@ export class ProductsService {
   // y realizar operaciones HTTP como GET, POST, PUT, DELETE, etc.
   private readonly _http = inject(HttpClient);
   private readonly _endPoint = environment.apiURL;
-    private readonly _injector = inject(EnvironmentInjector);
+  private readonly _injector = inject(EnvironmentInjector);
 
   constructor() {
-    console.log(this.products());
-
     this.getProducts();
-    console.log(this.products());
   }
 
   // Métodos para obtener productos
@@ -31,7 +27,6 @@ export class ProductsService {
       .get<Product[]>(`${this._endPoint}/products/?sort=desc`)
       .pipe(tap((data: Product[]) => this.products.set(data)))
       .subscribe();
-
   }
 
   // Métodos para obtener un producto por ID

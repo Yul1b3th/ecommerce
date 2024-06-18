@@ -67,3 +67,4 @@ function calculateTotalAmount(products: Product[]): number {
 function calculateProductCount(products: Product[]): number {
   return products.reduce((acc, product) => acc + product.qty, 0);
 }
+

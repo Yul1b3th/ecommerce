@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
+import { EnvironmentInjector, Injectable, inject, runInInjectionContext, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { environment } from '@envs/environment.development';
 import { Product } from '@shared/models/product.interface';
@@ -31,6 +32,6 @@ export class ProductsService {
 
   // Métodos para obtener un producto por ID
   public getProductById(id: number) {
-    return this._http.get<Product>(`${this._endPoint}/products/${id}`);
+    return runInInjectionContext(this._injector, () => toSignal<Product>(this._http.get<Product>(`${this._endPoint}/products/${id}`)));
   }
 }

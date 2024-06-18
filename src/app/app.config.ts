@@ -1,18 +1,23 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { ApplicationConfig } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-
+import { ErrorResponseInterceptor } from '@shared/interceptors/error-response.interceptor';
+import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideStore } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideAnimations(),
+    provideToastr({ timeOut: 900, preventDuplicates: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideClientHydration(),
-    provideHttpClient(withFetch()),
-    provideStore(reducers, { metaReducers })
-]
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([ErrorResponseInterceptor])
+    ),
+  ],
 };

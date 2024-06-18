@@ -3,6 +3,7 @@ import { ProductsService } from '@api/product.service';
 import { Product } from '../../../shared/models/product.interface';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CartStore } from '@shared/store/shopping-cart.store';
 
 @Component({
   selector: 'app-details',
@@ -16,6 +17,7 @@ export default class DetailsComponent implements OnInit{
   productId = input<number>(0, { alias: 'id' });
   product!: Signal<Product | undefined>;
   starsArray: number[] = new Array(5).fill(0);
+  cartStore = inject(CartStore);
 
   private readonly productSvc = inject(ProductsService);
   private readonly _sanitizer = inject(DomSanitizer);
@@ -24,7 +26,9 @@ export default class DetailsComponent implements OnInit{
     this.product = this.productSvc.getProductById(this.productId());
   }
 
-  onAddToCart() { }
+  onAddToCart() {
+    this.cartStore.addToCart(this.product() as Product);
+  }
 
   generateSVG(index: number): any {
     let svgContent = null;
@@ -56,4 +60,6 @@ export default class DetailsComponent implements OnInit{
     }
     return this._sanitizer.bypassSecurityTrustHtml(svgContent);
   }
+
+
 }

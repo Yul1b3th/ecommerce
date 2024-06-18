@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 import { environment } from '@envs/environment.development';
 import { Product } from '@shared/models/product.interface';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
@@ -26,7 +26,12 @@ export class ProductsService {
   public getProducts(): void {
     this._http
       .get<Product[]>(`${this._endPoint}/products/?sort=desc`)
-      .pipe(tap((data: Product[]) => this.products.set(data)))
+      .pipe(
+        map((products: Product[]) =>
+          products.map((product: Product) => ({ ...product, qty: 1 }))
+        ),
+        tap((products: Product[]) => this.products.set(products))
+      )
       .subscribe();
   }
 

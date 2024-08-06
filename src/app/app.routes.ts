@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'products',
-    loadChildren: () => import('./features/products/products.route')
+    loadChildren: () => import('./features/products/products.routes')
   },
   {
     path: 'checkout',
